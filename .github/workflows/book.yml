@@ -23,28 +23,28 @@ jobs:
         with:
           repository: xm1221/MieHexRevolution1.20.1
           path: books/miehex-revolution
-          token: ${{ secrets.MIEHEX_REPO_TOKEN }}
+          token: ${{ secrets.MIEHEX_REPO_TOKEN || github.token }}
 
       - name: Checkout AbadonedGreatwork
         uses: actions/checkout@v5
         with:
           repository: xm1221/AbadonedGreatwork
           path: books/abadoned-greatwork
-          token: ${{ secrets.MIEHEX_REPO_TOKEN }}
+          token: ${{ secrets.MIEHEX_REPO_TOKEN || github.token }}
 
       - name: Checkout Almightly-Staff
         uses: actions/checkout@v5
         with:
           repository: xm1221/Almightly-Staff
           path: books/almightly-staff
-          token: ${{ secrets.MIEHEX_REPO_TOKEN }}
+          token: ${{ secrets.MIEHEX_REPO_TOKEN || github.token }}
 
       - name: Checkout miehex_for_bigpackage
         uses: actions/checkout@v5
         with:
           repository: xm1221/miehex_for_bigpackage
           path: books/miehex-for-bigpackage
-          token: ${{ secrets.MIEHEX_REPO_TOKEN }}
+          token: ${{ secrets.MIEHEX_REPO_TOKEN || github.token }}
 
       - name: Set up Python
         uses: actions/setup-python@v6
