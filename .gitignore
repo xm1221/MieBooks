@@ -9,3 +9,7 @@ deploy/
 _site/
 .venv/
 __pycache__/
+
+# IDE
+.idea/
+*.iml
