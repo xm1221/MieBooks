@@ -54,13 +54,16 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v7
 
+      - name: Install xvfb (headless GL for hexdoc)
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
       # ---- build each book ----
       - name: Build miehex-revolution
         working-directory: books/miehex-revolution
         run: |
           uv sync
           printf 'GITHUB_REPOSITORY=xm1221/MieHexRevolution1.20.1\nGITHUB_SHA=main\nGITHUB_PAGES_URL=https://hexbook.xm1221.cn/miehex-revolution\n' > .env
-          uv run hexdoc build
+          xvfb-run -a uv run hexdoc build
           uv run hexdoc merge
 
       - name: Build abadoned-greatwork
@@ -68,7 +71,7 @@ jobs:
         run: |
           uv sync
           printf 'GITHUB_REPOSITORY=xm1221/AbadonedGreatwork\nGITHUB_SHA=main\nGITHUB_PAGES_URL=https://hexbook.xm1221.cn/abadoned-greatwork\n' > .env
-          uv run hexdoc build
+          xvfb-run -a uv run hexdoc build
           uv run hexdoc merge
 
       - name: Build almightly-staff
@@ -76,7 +79,7 @@ jobs:
         run: |
           uv sync
           printf 'GITHUB_REPOSITORY=xm1221/Almightly-Staff\nGITHUB_SHA=main\nGITHUB_PAGES_URL=https://hexbook.xm1221.cn/almightly-staff\n' > .env
-          uv run hexdoc build
+          xvfb-run -a uv run hexdoc build
           uv run hexdoc merge
 
       - name: Build miehex-for-bigpackage
@@ -84,7 +87,7 @@ jobs:
         run: |
           uv sync
           printf 'GITHUB_REPOSITORY=xm1221/miehex_for_bigpackage\nGITHUB_SHA=main\nGITHUB_PAGES_URL=https://hexbook.xm1221.cn/miehex-for-bigpackage\n' > .env
-          uv run hexdoc build
+          xvfb-run -a uv run hexdoc build
           uv run hexdoc merge
 
       # ---- assemble full site (全量覆盖) ----
