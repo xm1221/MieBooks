@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  repository_dispatch:
+    types: [book-update]
 
 concurrency:
   group: hexbook
@@ -15,13 +17,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 各 book 仓库（私有仓库需 MIEHEX_REPO_TOKEN secret）
       - name: Checkout MieHexRevolution
         uses: actions/checkout@v4
         with:
           repository: xm1221/MieHexRevolution1.20.1
-          path: miehex
-          # 仅当 MieHexRevolution1.20.1 为私有仓库时需要
-          # Settings → Secrets → Actions → MIEHEX_REPO_TOKEN（PAT，读权限）
+          path: books/miehex-revolution
+          token: ${{ secrets.MIEHEX_REPO_TOKEN }}
+
+      - name: Checkout AbadonedGreatwork
+        uses: actions/checkout@v4
+        with:
+          repository: xm1221/AbadonedGreatwork
+          path: books/abadoned-greatwork
+          token: ${{ secrets.MIEHEX_REPO_TOKEN }}
+
+      - name: Checkout Almightly-Staff
+        uses: actions/checkout@v4
+        with:
+          repository: xm1221/Almightly-Staff
+          path: books/almightly-staff
+          token: ${{ secrets.MIEHEX_REPO_TOKEN }}
+
+      - name: Checkout miehex_for_bigpackage
+        uses: actions/checkout@v4
+        with:
+          repository: xm1221/miehex_for_bigpackage
+          path: books/miehex-for-bigpackage
           token: ${{ secrets.MIEHEX_REPO_TOKEN }}
 
       - name: Set up Python
@@ -32,26 +54,49 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
 
-      - name: Install dependencies
-        working-directory: miehex
-        run: uv sync
-
-      - name: Configure site URL
-        working-directory: miehex
+      # ---- build each book ----
+      - name: Build miehex-revolution
+        working-directory: books/miehex-revolution
         run: |
+          uv sync
           printf 'GITHUB_REPOSITORY=xm1221/MieHexRevolution1.20.1\nGITHUB_SHA=main\nGITHUB_PAGES_URL=https://hexbook.xm1221.cn/miehex-revolution\n' > .env
-
-      - name: Build web book
-        working-directory: miehex
-        run: |
           uv run hexdoc build
           uv run hexdoc merge
 
+      - name: Build abadoned-greatwork
+        working-directory: books/abadoned-greatwork
+        run: |
+          uv sync
+          printf 'GITHUB_REPOSITORY=xm1221/AbadonedGreatwork\nGITHUB_SHA=main\nGITHUB_PAGES_URL=https://hexbook.xm1221.cn/abadoned-greatwork\n' > .env
+          uv run hexdoc build
+          uv run hexdoc merge
+
+      - name: Build almightly-staff
+        working-directory: books/almightly-staff
+        run: |
+          uv sync
+          printf 'GITHUB_REPOSITORY=xm1221/Almightly-Staff\nGITHUB_SHA=main\nGITHUB_PAGES_URL=https://hexbook.xm1221.cn/almightly-staff\n' > .env
+          uv run hexdoc build
+          uv run hexdoc merge
+
+      - name: Build miehex-for-bigpackage
+        working-directory: books/miehex-for-bigpackage
+        run: |
+          uv sync
+          printf 'GITHUB_REPOSITORY=xm1221/miehex_for_bigpackage\nGITHUB_SHA=main\nGITHUB_PAGES_URL=https://hexbook.xm1221.cn/miehex-for-bigpackage\n' > .env
+          uv run hexdoc build
+          uv run hexdoc merge
+
+      # ---- assemble full site (全量覆盖) ----
       - name: Assemble deploy directory
         run: |
           rm -rf deploy
-          mkdir -p deploy/miehex-revolution
-          cp -r miehex/_site/dst/docs/. deploy/miehex-revolution/
+          mkdir -p deploy
+          for d in books/*/; do
+            slug=$(basename "$d")
+            mkdir -p "deploy/$slug"
+            cp -r "$d/_site/dst/docs/." "deploy/$slug/"
+          done
           cp web/index.html deploy/index.html
 
       - name: Deploy to Cloudflare Pages

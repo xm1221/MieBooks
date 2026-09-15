@@ -1,7 +1,6 @@
-# 本地一键构建+组装+部署 MieHex 网页书到 Cloudflare Pages 总项目 hexbook
-# 聚合仓库 MieBooks：产物组装在 deploy/（miehex-revolution/ + 导航首页），全量上传。
+# 本地一键构建+组装+部署全部 MieHex 网页书到 Cloudflare Pages 总项目 hexbook
+# 聚合仓库 MieBooks：book 定义见下方 $books，产物组装在 deploy/（各书子目录 + 导航首页），全量上传。
 param(
-  [string]$MieHexPath = "C:\Users\Administrator\Desktop\BigPack\MieHexRevolution1.20.1",
   [switch]$SkipBuild,
   [string]$ProjectName = "hexbook",
   [string]$Branch = "main"
@@ -10,34 +9,55 @@ $ErrorActionPreference = "Stop"
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location $root
 
-if (-not (Test-Path (Join-Path $MieHexPath ".venv\Scripts\hexdoc.exe"))) {
-  throw "MieHex .venv hexdoc.exe not found at $MieHexPath"
-}
-
-if (-not $SkipBuild) {
-  Push-Location $MieHexPath
-  try {
-    & ".\.venv\Scripts\hexdoc.exe" build
-    if ($LASTEXITCODE -ne 0) { throw "hexdoc build failed" }
-    & ".\.venv\Scripts\hexdoc.exe" merge
-    if ($LASTEXITCODE -ne 0) { throw "hexdoc merge failed" }
-  } finally {
-    Pop-Location
-  }
-}
+# book 定义：Path = hexdoc 项目根，Slug = 书站子目录
+$books = @(
+  @{ Path = "C:\Users\Administrator\Desktop\BigPack\MieHexRevolution1.20.1";      Slug = "miehex-revolution" },
+  @{ Path = "C:\Users\Administrator\Desktop\BigPack\AbadonedGreatwork";           Slug = "abadoned-greatwork" },
+  @{ Path = "C:\Users\Administrator\Desktop\BigPack\Almightly Staff";             Slug = "almightly-staff" },
+  @{ Path = "C:\Users\Administrator\Desktop\BigPack\miehex1.20.1\miehex_for_bigpackage"; Slug = "miehex-for-bigpackage" }
+)
 
 $deploy = Join-Path $root "deploy"
 if (Test-Path $deploy) { Remove-Item $deploy -Recurse -Force }
-New-Item -ItemType Directory -Path (Join-Path $deploy "miehex-revolution") -Force | Out-Null
-Copy-Item -Path (Join-Path $MieHexPath "_site\dst\docs\*") -Destination (Join-Path $deploy "miehex-revolution") -Recurse -Force
+New-Item -ItemType Directory $deploy -Force | Out-Null
+
+foreach ($book in $books) {
+  $hexdoc = Join-Path $book.Path ".venv\Scripts\hexdoc.exe"
+  if (-not (Test-Path $hexdoc)) { throw "hexdoc.exe not found: $hexdoc" }
+
+  if (-not $SkipBuild) {
+    Push-Location $book.Path
+    try {
+      # 坑①：merge 复用旧 sitemap 标记 → 必须先删 _site 再 build+merge
+      if (Test-Path (Join-Path $book.Path "_site")) { Remove-Item (Join-Path $book.Path "_site") -Recurse -Force }
+      & ".\.venv\Scripts\hexdoc.exe" build
+      if ($LASTEXITCODE -ne 0) { throw "hexdoc build failed: $($book.Slug)" }
+      & ".\.venv\Scripts\hexdoc.exe" merge
+      if ($LASTEXITCODE -ne 0) { throw "hexdoc merge failed: $($book.Slug)" }
+    } finally {
+      Pop-Location
+    }
+  }
+
+  $src = Join-Path $book.Path "_site\dst\docs"
+  if (-not (Test-Path $src)) { throw "no _site\dst\docs at $($book.Path) (need build first)" }
+  $dst = Join-Path $deploy $book.Slug
+  New-Item -ItemType Directory $dst -Force | Out-Null
+  Copy-Item -Path (Join-Path $src "*") -Destination $dst -Recurse -Force
+}
+
 Copy-Item -Path (Join-Path $root "web\index.html") -Destination $deploy -Force
 
 $wrangler = Join-Path $root ".wrangler-tools\node_modules\.bin\wrangler.cmd"
 if (-not (Test-Path $wrangler)) {
-  $wrangler = Join-Path $MieHexPath ".wrangler-tools\node_modules\.bin\wrangler.cmd"
+  # fallback: 任意 book 的 wrangler（装在各 book 仓库）
+  foreach ($book in $books) {
+    $cand = Join-Path $book.Path ".wrangler-tools\node_modules\.bin\wrangler.cmd"
+    if (Test-Path $cand) { $wrangler = $cand; break }
+  }
 }
 if (-not (Test-Path $wrangler)) { throw "wrangler not found" }
 
 & $wrangler pages deploy $deploy --project-name $ProjectName --branch $Branch
-if ($LASTEXITCODE -ne 0) { throw "wrangler pages deploy failed" }
+# 注：wrangler.cmd 的 $LASTEXITCODE 不可靠，失败信息由 wrangler 直接打印
 Write-Output "Deployed. See https://$ProjectName.pages.dev"
