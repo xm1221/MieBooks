@@ -6,7 +6,7 @@
 <title>筱乜的咒法学书库</title>
 <style>
   body { font-family: system-ui, "Microsoft YaHei", sans-serif; color:#e8e6e3; max-width:760px; margin:0 auto; padding:40px 20px;
-    background: linear-gradient(rgba(10,12,16,.55), rgba(10,12,16,.55)), url('./xm.png') center / cover no-repeat fixed, #0f1115; }
+    background: linear-gradient(rgba(10,12,16,.55), rgba(10,12,16,.55)), url('./xm.png') center / contain no-repeat fixed, #0f1115; }
   h1 { font-size:1.8em; }
   .card { display:flex; align-items:center; gap:16px; border:1px solid #2a2e37; border-radius:12px; padding:16px 22px; margin:14px 0; text-decoration:none; color:#e8e6e3; background:#161922; transition:border-color .15s; }
   .card:hover { border-color:#7a6cff; }
@@ -14,7 +14,7 @@
   .card h2 { margin:0 0 4px; font-size:1.15em; color:#a89bff; }
   .card p { margin:0; font-size:.92em; color:#9aa0ab; }
   .tag { display:inline-block; font-size:.78em; padding:2px 8px; border-radius:999px; background:#262b38; color:#c9cede; margin-left:8px; vertical-align:middle; }
-  #cover { position:fixed; inset:0; z-index:10; background:url('./xm.png') center / cover no-repeat #0f1115; display:flex; align-items:flex-end; justify-content:center; padding-bottom:56px; cursor:pointer; transition:opacity .6s ease; }
+  #cover { position:fixed; inset:0; z-index:10; background:#0f1115 url('./xm.png') center / contain no-repeat; display:flex; align-items:flex-end; justify-content:center; padding-bottom:56px; cursor:pointer; transition:opacity .6s ease; }
   #cover.hide { opacity:0; pointer-events:none; }
   #enterBtn { font-family:inherit; font-size:1.05em; color:#e8e6e3; background:rgba(20,22,32,.72); border:1px solid #7a6cff; border-radius:999px; padding:12px 38px; cursor:pointer; transition:background .15s, transform .15s; }
   #enterBtn:hover { background:#7a6cff; color:#fff; transform:translateY(-2px); }
