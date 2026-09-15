@@ -56,11 +56,8 @@ foreach ($book in $books) {
   }
 }
 
-Copy-Item -Path (Join-Path $root "web\index.html") -Destination $deploy -Force
-# 首页卡片 icon（web/icons → deploy/icons）
-if (Test-Path (Join-Path $root "web\icons")) {
-  Copy-Item -Path (Join-Path $root "web\icons") -Destination $deploy -Recurse -Force
-}
+# web/ 全部资源（index.html + icons + 背景图等）→ deploy/
+Copy-Item -Path (Join-Path $root "web\*") -Destination $deploy -Recurse -Force
 
 $wrangler = Join-Path $root ".wrangler-tools\node_modules\.bin\wrangler.cmd"
 if (-not (Test-Path $wrangler)) {

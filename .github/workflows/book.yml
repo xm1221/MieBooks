@@ -104,8 +104,7 @@ jobs:
           for d in deploy/*/; do
             sed -i 's|/en_us"|/zh_cn"|' "$d/index.html"
           done
-          cp web/index.html deploy/index.html
-          cp -r web/icons deploy/icons
+          cp -r web/. deploy/
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
