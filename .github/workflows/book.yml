@@ -15,44 +15,44 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # 各 book 仓库（私有仓库需 MIEHEX_REPO_TOKEN secret）
       - name: Checkout MieHexRevolution
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: xm1221/MieHexRevolution1.20.1
           path: books/miehex-revolution
           token: ${{ secrets.MIEHEX_REPO_TOKEN }}
 
       - name: Checkout AbadonedGreatwork
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: xm1221/AbadonedGreatwork
           path: books/abadoned-greatwork
           token: ${{ secrets.MIEHEX_REPO_TOKEN }}
 
       - name: Checkout Almightly-Staff
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: xm1221/Almightly-Staff
           path: books/almightly-staff
           token: ${{ secrets.MIEHEX_REPO_TOKEN }}
 
       - name: Checkout miehex_for_bigpackage
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: xm1221/miehex_for_bigpackage
           path: books/miehex-for-bigpackage
           token: ${{ secrets.MIEHEX_REPO_TOKEN }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
 
       # ---- build each book ----
       - name: Build miehex-revolution
@@ -105,7 +105,7 @@ jobs:
           cp -r web/icons deploy/icons
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ab2343f4691dfe98689e375fc23d4121
