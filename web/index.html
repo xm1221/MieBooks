@@ -14,9 +14,16 @@
   .card h2 { margin:0 0 4px; font-size:1.15em; color:#a89bff; }
   .card p { margin:0; font-size:.92em; color:#9aa0ab; }
   .tag { display:inline-block; font-size:.78em; padding:2px 8px; border-radius:999px; background:#262b38; color:#c9cede; margin-left:8px; vertical-align:middle; }
+  #cover { position:fixed; inset:0; z-index:10; background:url('./xm.png') center / cover no-repeat #0f1115; display:flex; align-items:flex-end; justify-content:center; padding-bottom:56px; cursor:pointer; transition:opacity .6s ease; }
+  #cover.hide { opacity:0; pointer-events:none; }
+  #enterBtn { font-family:inherit; font-size:1.05em; color:#e8e6e3; background:rgba(20,22,32,.72); border:1px solid #7a6cff; border-radius:999px; padding:12px 38px; cursor:pointer; transition:background .15s, transform .15s; }
+  #enterBtn:hover { background:#7a6cff; color:#fff; transform:translateY(-2px); }
 </style>
 </head>
 <body>
+  <div id="cover" role="button" aria-label="进入书库">
+    <button id="enterBtn">✦ 进入书库 ✦</button>
+  </div>
   <h1>筱乜的咒法学书库</h1>
   <p>以下为筱乜的咒法学模组网页书。</p>
   <a class="card" href="./miehex-revolution/">
@@ -47,5 +54,12 @@
       <p>咩之咒法</p>
     </div>
   </a>
+<script>
+  function enter() { document.getElementById('cover').classList.add('hide'); }
+  document.getElementById('cover').addEventListener('click', enter);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
+  });
+</script>
 </body>
 </html>
