@@ -13,3 +13,7 @@ __pycache__/
 # IDE
 .idea/
 *.iml
+
+# 本机 book 仓库根路径（scripts/books.local.json）与默认 checkout 目录
+scripts/books.local.json
+books/

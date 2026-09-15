@@ -9,13 +9,16 @@ $ErrorActionPreference = "Stop"
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location $root
 
-# book 定义：Path = hexdoc 项目根，Slug = 书站子目录
-$books = @(
-  @{ Path = "C:\Users\Administrator\Desktop\BigPack\MieHexRevolution1.20.1";      Slug = "miehex-revolution" },
-  @{ Path = "C:\Users\Administrator\Desktop\BigPack\AbadonedGreatwork";           Slug = "abadoned-greatwork" },
-  @{ Path = "C:\Users\Administrator\Desktop\BigPack\Almightly Staff";             Slug = "almightly-staff" },
-  @{ Path = "C:\Users\Administrator\Desktop\BigPack\miehex1.20.1\miehex_for_bigpackage"; Slug = "miehex-for-bigpackage" }
-)
+# book 定义：身份（slug/repo/dir）在 scripts/books.config.json，仓库内无本地路径；
+# 本地根目录从 scripts/books.local.json 读取（该文件已 gitignore），缺省回退到 <MieBooks>/books/
+$configFile = Join-Path $PSScriptRoot "books.config.json"
+$localFile  = Join-Path $PSScriptRoot "books.local.json"
+$booksRoot = if (Test-Path $localFile) { (Get-Content $localFile -Raw | ConvertFrom-Json).root }
+             else { Join-Path $root "books" }
+$books = @()
+foreach ($b in (Get-Content $configFile -Raw | ConvertFrom-Json)) {
+  $books += @{ Path = Join-Path $booksRoot $b.dir; Slug = $b.slug; Repo = $b.repo }
+}
 
 $deploy = Join-Path $root "deploy"
 if (Test-Path $deploy) { Remove-Item $deploy -Recurse -Force }
