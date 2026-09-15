@@ -46,6 +46,16 @@ foreach ($book in $books) {
   Copy-Item -Path (Join-Path $src "*") -Destination $dst -Recurse -Force
 }
 
+# 默认语言跳转：hexdoc 根跳转默认 en_us，改为 zh_cn（书内仍可切换语言）
+foreach ($book in $books) {
+  $idx = Join-Path $deploy "$($book.Slug)\index.html"
+  if (Test-Path $idx) {
+    $content = Get-Content $idx -Raw
+    $content = $content -replace '/en_us"', '/zh_cn"'
+    Set-Content -Path $idx -Value $content -Encoding UTF8
+  }
+}
+
 Copy-Item -Path (Join-Path $root "web\index.html") -Destination $deploy -Force
 
 $wrangler = Join-Path $root ".wrangler-tools\node_modules\.bin\wrangler.cmd"

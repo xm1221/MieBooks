@@ -7,9 +7,10 @@
 <style>
   body { font-family: system-ui, "Microsoft YaHei", sans-serif; background:#0f1115; color:#e8e6e3; max-width:760px; margin:0 auto; padding:40px 20px; }
   h1 { font-size:1.8em; }
-  .card { display:block; border:1px solid #2a2e37; border-radius:12px; padding:18px 22px; margin:14px 0; text-decoration:none; color:#e8e6e3; background:#161922; transition:border-color .15s; }
+  .card { display:flex; align-items:center; gap:16px; border:1px solid #2a2e37; border-radius:12px; padding:16px 22px; margin:14px 0; text-decoration:none; color:#e8e6e3; background:#161922; transition:border-color .15s; }
   .card:hover { border-color:#7a6cff; }
-  .card h2 { margin:0 0 6px; font-size:1.15em; color:#a89bff; }
+  .card .icon { width:52px; height:52px; border-radius:10px; flex:none; image-rendering:pixelated; }
+  .card h2 { margin:0 0 4px; font-size:1.15em; color:#a89bff; }
   .card p { margin:0; font-size:.92em; color:#9aa0ab; }
   .tag { display:inline-block; font-size:.78em; padding:2px 8px; border-radius:999px; background:#262b38; color:#c9cede; margin-left:8px; vertical-align:middle; }
 </style>
@@ -18,20 +19,32 @@
   <h1>筱乜的咒法学书库</h1>
   <p>以下为筱乜的咒法学模组网页书。</p>
   <a class="card" href="./miehex-revolution/">
-    <h2>MieHex:Revolution <span class="tag">咒法学附属</span></h2>
-    <p>咩之咒法：变革</p>
+    <img class="icon" src="./icons/miehex-revolution.png" alt="MieHex:Revolution" />
+    <div>
+      <h2>MieHex:Revolution <span class="tag">咒法学附属</span></h2>
+      <p>咩之咒法：变革</p>
+    </div>
   </a>
   <a class="card" href="./abadoned-greatwork/">
-    <h2>Abadoned Greatwork <span class="tag">咒法学附属</span></h2>
-    <p>被遗弃的卓伟之作</p>
+    <img class="icon" src="./icons/abadoned-greatwork.png" alt="Abadoned Greatwork" />
+    <div>
+      <h2>Abadoned Greatwork <span class="tag">咒法学附属</span></h2>
+      <p>遗弃的大工事</p>
+    </div>
   </a>
   <a class="card" href="./almightly-staff/">
-    <h2>Almightly Staff <span class="tag">咒法学附属</span></h2>
-    <p>万法之杖</p>
+    <img class="icon" src="./icons/almightly-staff.png" alt="Almightly Staff" />
+    <div>
+      <h2>Almightly Staff <span class="tag">咒法学附属</span></h2>
+      <p>万法之杖</p>
+    </div>
   </a>
   <a class="card" href="./miehex-for-bigpackage/">
-    <h2>miehex <span class="tag">咒法学附属</span></h2>
-    <p>咩之咒法</p>
+    <img class="icon" src="./icons/miehex.png" alt="miehex" />
+    <div>
+      <h2>miehex <span class="tag">咒法学</span></h2>
+      <p>miehex 网页书</p>
+    </div>
   </a>
 </body>
 </html>

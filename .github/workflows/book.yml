@@ -97,6 +97,10 @@ jobs:
             mkdir -p "deploy/$slug"
             cp -r "$d/_site/dst/docs/." "deploy/$slug/"
           done
+          # 默认语言改为中文：hexdoc 根跳转 en_us -> zh_cn（书内仍可切换语言）
+          for d in deploy/*/; do
+            sed -i 's|/en_us"|/zh_cn"|' "$d/index.html"
+          done
           cp web/index.html deploy/index.html
 
       - name: Deploy to Cloudflare Pages
