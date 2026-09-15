@@ -1,0 +1,62 @@
+name: Deploy book
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: hexbook
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout MieHexRevolution
+        uses: actions/checkout@v4
+        with:
+          repository: xm1221/MieHexRevolution1.20.1
+          path: miehex
+          # 仅当 MieHexRevolution1.20.1 为私有仓库时需要
+          # Settings → Secrets → Actions → MIEHEX_REPO_TOKEN（PAT，读权限）
+          token: ${{ secrets.MIEHEX_REPO_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install dependencies
+        working-directory: miehex
+        run: uv sync
+
+      - name: Configure site URL
+        working-directory: miehex
+        run: |
+          printf 'GITHUB_REPOSITORY=xm1221/MieHexRevolution1.20.1\nGITHUB_SHA=main\nGITHUB_PAGES_URL=https://hexbook.xm1221.cn/miehex-revolution\n' > .env
+
+      - name: Build web book
+        working-directory: miehex
+        run: |
+          uv run hexdoc build
+          uv run hexdoc merge
+
+      - name: Assemble deploy directory
+        run: |
+          rm -rf deploy
+          mkdir -p deploy/miehex-revolution
+          cp -r miehex/_site/dst/docs/. deploy/miehex-revolution/
+          cp web/index.html deploy/index.html
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ab2343f4691dfe98689e375fc23d4121
+          command: pages deploy deploy --project-name hexbook --branch main

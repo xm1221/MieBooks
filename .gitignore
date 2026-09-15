@@ -1,0 +1,11 @@
+# 本地组装产物（Cloudflare Pages 上传目录，全量覆盖，不入库）
+deploy/
+
+# 本地 wrangler 工具（装在各 book 仓库或这里均可）
+.wrangler-tools/
+.wrangler/
+
+# 构建缓存
+_site/
+.venv/
+__pycache__/
