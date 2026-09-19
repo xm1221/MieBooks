@@ -82,14 +82,28 @@ book 的**身份**（子目录 slug、GitHub 仓库、相对目录名）统一�
 { "items": [ { "q": "问题", "a": "回答", "nickname": "昵称(可省)", "date": "2026-09-17" } ] }
 ```
 
-添加方式二选一：
+添加方式：
 
-1. **交互式脚本**（推荐，防格式错）：
+1. **文件导入**（推荐，支持多行/批量）：
    ```powershell
-   node scripts/add-qa.mjs
+   node scripts/add-qa.mjs --file "问答.md"
+   node scripts/add-qa.mjs --file "批量.json"
    ```
-   依次输入问题/回答/昵称/日期，自动写入，然后 `git add web/qa-data.json && git commit -m "add qa" && git push` 上线。
-2. **直接编辑** `web/qa-data.json`：往 `items` 数组加一个对象（注意 JSON 逗号；回答多行用 `\n` 转义）。
+   Markdown 格式（`# Q：` / `# A：` 块，`> 昵称：` `> 日期：` 为元数据行，可重复多块 = 多条）：
+   ```markdown
+   # Q：问题标题
+   问题详细内容（可多行）
+
+   # A：回答内容（可多行）
+   > 昵称：小明
+   > 日期：2026-09-18
+   ```
+   JSON 格式与 `qa-data.json` 同构：`{ "items": [ { "q": "…", "a": "…", "nickname": "…", "date": "…" } ] }`
+2. **参数模式**：`node scripts/add-qa.mjs "问题" "回答" ["昵称"] ["日期"]`
+3. **交互模式**：`node scripts/add-qa.mjs`（依次输入）
+4. **直接编辑** `web/qa-data.json`（注意 JSON 逗号；回答多行用 `\n`）
+
+导入后 `git add web/qa-data.json && git commit -m "add qa" && git push` 上线。
 
 收录原则：只收录勾选「允许公开」的问题；展示保留提问者昵称、隐去邮箱；涉及隐私（存档、服务器、个人信息）的内容一律不收录。
 
