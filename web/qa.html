@@ -24,21 +24,38 @@
   <a class="back" href="./">← 返回书库</a>
   <h1>问答合集</h1>
   <p class="hint">这里收录公开的咒法学问答（提问时勾选「允许公开」并被筱乜选入的问题）。展示会保留提问者昵称、隐去邮箱；隐私问题与未公开问题不会出现在这里。</p>
-
-  <!--
-    维护说明：新增公开问答时，复制下面被注释的 .qa-item 模板，
-    填上问题、回答、日期后粘贴到「问答列表」位置即可。
-  -->
-  <!-- 模板（复制下面的块）：
-  <div class="qa-item">
-    <p class="q">Q：如何……？</p>
-    <p class="a">A：……</p>
-    <p class="date">2026-09-17</p>
-  </div>
-  -->
-
-  <div class="empty">暂时还没有公开的问答。<br />去提一个问题，勾选「允许公开」，答案可能就会出现在这里。</div>
-
+  <div id="list"></div>
   <a class="ask" href="./ask.html">✉ 向筱乜提问</a>
+<script>
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+  fetch('./qa-data.json')
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      var list = document.getElementById('list');
+      var items = (data && data.items) || [];
+      if (!items.length) {
+        list.innerHTML = '<div class="empty">暂时还没有公开的问答。<br />去提一个问题，勾选「允许公开」，答案可能就会出现在这里。</div>';
+        return;
+      }
+      list.innerHTML = items.map(function (it) {
+        var meta = [];
+        if (it.nickname) meta.push('来自 ' + it.nickname);
+        if (it.date) meta.push(it.date);
+        var aHtml = esc(it.a).replace(/\n/g, '<br>');
+        return '<div class="qa-item">' +
+          '<p class="q">Q：' + esc(it.q) + '</p>' +
+          '<p class="a">A：' + aHtml + '</p>' +
+          '<p class="date">' + esc(meta.join(' · ')) + '</p>' +
+          '</div>';
+      }).join('');
+    })
+    .catch(function () {
+      document.getElementById('list').innerHTML = '<div class="empty">问答数据加载失败。</div>';
+    });
+</script>
 </body>
 </html>
