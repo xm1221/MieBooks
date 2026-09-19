@@ -18,15 +18,20 @@
   #cover.hide { opacity:0; pointer-events:none; }
   #enterBtn { font-family:inherit; font-size:1.05em; color:#e8e6e3; background:rgba(20,22,32,.72); border:1px solid #7a6cff; border-radius:999px; padding:12px 38px; cursor:pointer; transition:background .15s, transform .15s; }
   #enterBtn:hover { background:#7a6cff; color:#fff; transform:translateY(-2px); }
-  .topbar { position:fixed; top:0; left:0; right:0; z-index:5; display:flex; justify-content:flex-end; align-items:center; padding:10px 20px; background:rgba(15,17,21,.85); border-bottom:1px solid #2a2e37; }
-  .topbar a { color:#a89bff; text-decoration:none; font-size:.95em; padding:6px 16px; border:1px solid #7a6cff; border-radius:999px; transition:background .15s, color .15s; }
-  .topbar a:hover { background:#7a6cff; color:#fff; }
+  .topbar { position:fixed; top:0; left:0; right:0; z-index:5; display:flex; justify-content:flex-end; align-items:center; gap:12px; padding:10px 20px; background:rgba(15,17,21,.85); border-bottom:1px solid #2a2e37; }
+  .topbar .link { color:#9aa0ab; text-decoration:none; font-size:.9em; padding:6px 10px; }
+  .topbar .link:hover { color:#a89bff; }
+  .topbar .btn { color:#a89bff; text-decoration:none; font-size:.95em; padding:6px 16px; border:1px solid #7a6cff; border-radius:999px; transition:background .15s, color .15s; }
+  .topbar .btn:hover { background:#7a6cff; color:#fff; }
   .mailme { position:fixed; left:16px; bottom:16px; z-index:5; opacity:.8; transition:opacity .15s; }
   .mailme:hover { opacity:1; }
 </style>
 </head>
 <body>
-  <div class="topbar"><a href="./ask.html">❓ 向作者提问</a></div>
+  <div class="topbar">
+    <a class="link" href="./qa.html">问答合集</a>
+    <a class="btn" href="./ask.html">向筱乜提问</a>
+  </div>
   <a class="mailme" target="_blank" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PU1IX1FUXn1FUAwPDwwTXlM" title="用 QQ 邮箱写信给我">
     <img src="https://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png" alt="邮我" />
   </a>

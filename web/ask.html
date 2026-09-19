@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>向作者提问 - 筱乜的咒法学书库</title>
+<title>向筱乜提问 - 筱乜的咒法学书库</title>
 <style>
   body { font-family:system-ui,"Microsoft YaHei",sans-serif; color:#e8e6e3; max-width:760px; margin:0 auto; padding:40px 20px;
     background: linear-gradient(rgba(10,12,16,.55), rgba(10,12,16,.55)), url('./xm.png') center / contain no-repeat fixed, #0f1115; }
@@ -11,10 +11,16 @@
   .back:hover { text-decoration:underline; }
   h1 { font-size:1.6em; color:#a89bff; margin:0 0 8px; }
   .hint { font-size:.9em; color:#9aa0ab; margin:0 0 20px; }
-  .card { border:1px solid #2a2e37; border-radius:12px; padding:24px; background:#161922; }
+  .card { border:1px solid #2a2e37; border-radius:12px; padding:24px; background:#161922; margin-bottom:18px; }
+  .rules { font-size:.88em; color:#c9cede; line-height:1.75; }
+  .rules h2 { font-size:1.05em; color:#a89bff; margin:0 0 8px; }
+  .rules ul { margin:0; padding-left:20px; }
+  .rules li { margin:3px 0; }
   label { display:block; margin:16px 0 6px; font-size:.95em; color:#c9cede; }
-  input, textarea { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #2a2e37; border-radius:8px; background:#0f1115; color:#e8e6e3; font:inherit; }
+  input[type=text], input[type=email], textarea { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #2a2e37; border-radius:8px; background:#0f1115; color:#e8e6e3; font:inherit; }
   input:focus, textarea:focus { outline:none; border-color:#7a6cff; }
+  .radio-row { display:flex; gap:22px; margin-top:6px; }
+  .radio-row label { display:flex; align-items:center; gap:6px; margin:0; font-size:.95em; cursor:pointer; }
   button { margin-top:22px; font-family:inherit; font-size:1em; color:#fff; background:#7a6cff; border:none; border-radius:999px; padding:12px 36px; cursor:pointer; transition:filter .15s; }
   button:hover { filter:brightness(1.12); }
   button:disabled { opacity:.6; cursor:default; }
@@ -25,28 +31,56 @@
 </head>
 <body>
   <a class="back" href="./">← 返回书库</a>
-  <h1>向作者提问</h1>
-  <p class="hint">写下你的咒法学问题，提交后会自动发邮件转达给作者。可以留下联系方式方便作者回复。</p>
+  <h1>向筱乜提问</h1>
+  <p class="hint">写下你的咒法学问题，提交后会自动发邮件转达给筱乜。可以留下联系方式方便回复。</p>
+
+  <div class="card rules">
+    <h2>提问须知</h2>
+    <ul>
+      <li><b>提问范围</b>：咒法学（Hex Casting）及本库附属模组（miehex / MieHex:Revolution / 万法之杖等）、本书内容相关的问题。</li>
+      <li><b>回复时间不定</b>：筱乜有空时会回复，请耐心等待；急事请用首页左下角的「邮我」按钮直接写信。</li>
+      <li><b>提问前先搜「问答合集」</b>：类似问题可能已有答案。</li>
+      <li><b>以下邮件不回复</b>：
+        <ul>
+          <li>无实质内容（如「在吗」「你好」等灌水）</li>
+          <li>辱骂、人身攻击、引战内容</li>
+          <li>广告、推广、拉人</li>
+          <li>与咒法学无关的问题（其他游戏、无关模组、服务器事务）</li>
+          <li>问答合集里已有答案的重复提问</li>
+          <li>索要付费代做、整份模组代码等不合理请求</li>
+          <li>短时间内轰炸式刷屏</li>
+        </ul>
+      </li>
+      <li><b>隐私</b>：勾选「允许公开」的问题可能被选入「问答合集」展示，展示时会隐去昵称与邮箱；不勾选则仅筱乜可见，绝不公开。</li>
+    </ul>
+  </div>
+
   <div class="card">
     <form action="https://formsubmit.co/public@xm1221.cn" method="POST" id="askForm">
       <input type="hidden" name="_subject" value="[hexbook] 咒法学提问" />
       <input type="hidden" name="_captcha" value="false" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_next" value="./ask.html?sent=1" />
+      <input type="hidden" name="_autoresponse" value="已收到你的问题，谢谢！——筱乜" />
       <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
       <label>昵称（可选）</label>
       <input type="text" name="昵称" maxlength="40" placeholder="怎么称呼你" />
       <label>你的问题 *</label>
-      <textarea name="问题内容" rows="6" required maxlength="2000" placeholder="描述你的问题……"></textarea>
+      <textarea name="问题内容" rows="6" required minlength="10" maxlength="2000" placeholder="描述你的问题……（至少 10 个字）"></textarea>
       <label>你的邮箱（可选，方便作者回复）</label>
       <input type="email" name="联系邮箱" placeholder="you@example.com" />
+      <label>是否允许公开</label>
+      <div class="radio-row">
+        <label><input type="radio" name="是否允许公开" value="允许" /> 允许公开</label>
+        <label><input type="radio" name="是否允许公开" value="不允许" checked /> 不允许</label>
+      </div>
       <button type="submit">✉ 提交问题</button>
     </form>
     <div id="msg"></div>
   </div>
 <script>
   if (new URLSearchParams(location.search).get('sent')) {
-    document.getElementById('msg').innerHTML = '✅ 问题已提交，邮件已转达给作者，谢谢！';
+    document.getElementById('msg').innerHTML = '✅ 问题已提交，邮件已转达给筱乜，谢谢！';
     document.getElementById('msg').className = 'ok';
     document.getElementById('askForm').style.display = 'none';
   }

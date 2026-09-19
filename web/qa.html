@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>问答合集 - 筱乜的咒法学书库</title>
+<style>
+  body { font-family:system-ui,"Microsoft YaHei",sans-serif; color:#e8e6e3; max-width:760px; margin:0 auto; padding:40px 20px;
+    background: linear-gradient(rgba(10,12,16,.55), rgba(10,12,16,.55)), url('./xm.png') center / contain no-repeat fixed, #0f1115; }
+  .back { display:inline-block; margin-bottom:14px; color:#a89bff; text-decoration:none; font-size:.9em; }
+  .back:hover { text-decoration:underline; }
+  h1 { font-size:1.6em; color:#a89bff; margin:0 0 8px; }
+  .hint { font-size:.9em; color:#9aa0ab; margin:0 0 20px; }
+  .qa-item { border:1px solid #2a2e37; border-radius:12px; padding:18px 22px; background:#161922; margin-bottom:14px; }
+  .q { font-size:1.05em; color:#e8e6e3; margin:0 0 8px; }
+  .a { font-size:.95em; color:#c9cede; line-height:1.7; margin:0; }
+  .date { font-size:.78em; color:#6b7280; margin-top:10px; }
+  .empty { border:1px dashed #2a2e37; border-radius:12px; padding:34px 22px; text-align:center; color:#9aa0ab; background:#14171f; }
+  .ask { display:inline-block; margin-top:18px; color:#a89bff; text-decoration:none; font-size:.95em; padding:8px 20px; border:1px solid #7a6cff; border-radius:999px; }
+  .ask:hover { background:#7a6cff; color:#fff; }
+</style>
+</head>
+<body>
+  <a class="back" href="./">← 返回书库</a>
+  <h1>问答合集</h1>
+  <p class="hint">这里收录公开的咒法学问答（提问时勾选「允许公开」并被筱乜选入的问题）。隐私问题与未公开问题不会出现在这里。</p>
+
+  <!--
+    维护说明：新增公开问答时，复制下面被注释的 .qa-item 模板，
+    填上问题、回答、日期后粘贴到「问答列表」位置即可。
+  -->
+  <!-- 模板（复制下面的块）：
+  <div class="qa-item">
+    <p class="q">Q：如何……？</p>
+    <p class="a">A：……</p>
+    <p class="date">2026-09-17</p>
+  </div>
+  -->
+
+  <div class="empty">暂时还没有公开的问答。<br />去提一个问题，勾选「允许公开」，答案可能就会出现在这里。</div>
+
+  <a class="ask" href="./ask.html">✉ 向筱乜提问</a>
+</body>
+</html>
