@@ -25,6 +25,9 @@
   .topbar .btn:hover { background:#7a6cff; color:#fff; }
   .mailme { position:fixed; left:16px; bottom:16px; z-index:5; opacity:.8; transition:opacity .15s; }
   .mailme:hover { opacity:1; }
+  .links { margin-top:36px; padding-top:16px; border-top:1px solid #2a2e37; font-size:.88em; color:#9aa0ab; }
+  .links a { color:#a89bff; text-decoration:none; margin-left:8px; }
+  .links a:hover { text-decoration:underline; }
 </style>
 </head>
 <body>
@@ -68,6 +71,7 @@
       <p>咩之咒法</p>
     </div>
   </a>
+  <div class="links">友情链接：<a href="https://hexcasting.cn" target="_blank" rel="noopener">阿卡夏图书馆（hexcasting.cn）</a></div>
 <script>
   function enter() { document.getElementById('cover').classList.add('hide'); }
   document.getElementById('cover').addEventListener('click', enter);
